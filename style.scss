@@ -1,0 +1,139 @@
+html,body {
+  margin: 0;
+  background-color:black;
+}
+.wrapper {
+    width:100vw;
+    height:100vh;
+    background: black;
+    position: relative;
+}
+$s1:"";
+$s2:"";
+$s3:"";
+@for $i from 1 through 300 {
+    $s1: $s1 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.1rem + #fff;
+    $s2: $s2 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.1rem + #fff;
+    $s3: $s3 + random(1000)*0.1vw + " " + random(1000)*0.1vh + " " + 0 + " " + random(50)*-0.1rem + #fff;
+    @if $i < 300 {
+        $s1: $s1 + ",";
+        $s2: $s2 + ",";
+        $s3: $s3 + ",";
+    }
+}
+.snow {
+    border-radius: 100%;
+    opacity: 0.8;
+    position: absolute;
+    top:-100vh;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+.layer1 {
+    width: 1.5rem;
+    height: 1.5rem;
+    filter:blur(1.5px);
+    box-shadow: #{$s1};
+    animation-duration: 12s;
+}
+.layer1.a {
+    animation-delay: -3s;
+}
+.layer2 {
+    width: 1.2rem;
+    height: 1.2rem;
+    filter:blur(3px);
+    box-shadow: #{$s2};
+    animation-duration: 16s;
+}
+.layer2.a {
+    animation-delay: -4s;
+}
+.layer3 {
+    width: 0.8rem;
+    height: 0.8rem;
+    filter:blur(6px);
+    box-shadow: #{$s3};
+    animation-duration: 20s;
+}
+.layer3.a {
+    animation-delay: -5s;
+}
+@keyframes fall {
+    100% {transform: translateY(200vh); }
+}
+
+.info {
+  background-color: black;
+  width: 75%;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+
+.info h1 {
+  margin-top: 80px;
+  font-size: 5rem;
+  text-align: center;
+  color: white;
+  font-family: 'Mukta', sans-serif;
+
+}
+
+.info p {
+  color: white;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: -80px;
+  font-family: 'Rubik', sans-serif;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.links i {
+  color:white;
+  margin: 10px;
+  transition: all 250ms;
+
+}
+
+.links i:hover {
+  color: lightblue;
+}
+
+@media  only screen and (max-width:900px) {
+
+  .info h1 {
+    margin-top: 60px;
+    font-size: 3rem;
+  
+  }
+  .info p {
+    font-size: 1.2rem;
+    margin-top: -50px;
+  }
+}
+@media  only screen and (max-width:600px) {
+
+  .info h1 {
+    margin-top: 40px;
+    font-size: 2rem; 
+  }
+
+  .info p {
+    font-size: .8rem;
+    margin-top: -30px;
+  }
+
+}
+
+.red {
+  color: tomato !important;
+}
