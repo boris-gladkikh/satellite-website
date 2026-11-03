@@ -1,0 +1,70 @@
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 520px;
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  border: 0;
+}
+
+.topic {
+  cursor: pointer;
+}
+
+.topic span {
+  display: inline-block;
+  padding-bottom: 6px;
+  border-bottom: 1px solid transparent;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  transition: color var(--ease), border-color var(--ease);
+}
+
+.topic:hover span {
+  color: var(--text-hover);
+}
+
+.topic input:checked + span {
+  color: var(--text);
+  border-bottom-color: var(--text);
+}
+
+.topic input:focus-visible + span {
+  outline: 1px solid var(--text);
+  outline-offset: 3px;
+}
+
+.send {
+  align-self: flex-start;
+  padding: 16px 36px;
+}
+
+.success {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 440px;
+  padding-top: 8px;
+}
+
+.successTitle {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 32px;
+  letter-spacing: 0.04em;
+}
+
+.successText {
+  line-height: 1.7;
+  color: var(--text-secondary);
+}

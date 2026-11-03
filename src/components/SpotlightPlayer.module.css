@@ -1,0 +1,57 @@
+.player {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.play {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--text);
+  color: #000;
+  transition: transform var(--ease), opacity var(--ease);
+}
+
+.play:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.play:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.time {
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  height: 1px;
+  background: var(--track);
+}
+
+.fill {
+  height: 1px;
+  background: var(--text);
+}

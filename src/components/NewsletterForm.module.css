@@ -1,0 +1,29 @@
+.form {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: min(480px, 100%);
+  margin-top: 16px;
+  text-align: left;
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+}
+
+.field input {
+  font-size: 15px;
+  border-bottom-color: var(--input-line-strong);
+}
+
+.success {
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text);
+}

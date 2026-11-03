@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-0196b434-46c1-4f99-a3a6-89a9e6833ca8/styles.css">
+<script src="_ds/modernist-0196b434-46c1-4f99-a3a6-89a9e6833ca8/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&family=Archivo:wght@300;400&display=swap">
+<style>
+body{margin:0;background:#000;color:#f3f2f2}
+a{color:#f3f2f2}a:hover{color:#fff}
+::selection{background:rgba(255,255,255,0.25)}
+input::placeholder,textarea::placeholder{color:rgba(243,242,242,0.35)}
+</style>
+</helmet>
+<div style="position:relative;min-height:100vh;background:#000;color:#f3f2f2;font-family:'Archivo',sans-serif;font-weight:300;overflow-x:hidden">
+  <canvas ref="{{ starRef }}" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0"></canvas>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh">
+
+    <header style="display:flex;justify-content:space-between;align-items:center;gap:32px;flex-wrap:wrap;padding:40px clamp(24px,5vw,80px)">
+      <button onClick="{{ goHome }}" style="all:unset;cursor:pointer;display:flex">
+        <img src="assets/sr-logo.png" alt="Satellite Respond" style="height:clamp(11px,1.1vw,16px);width:auto;max-width:100%">
+      </button>
+      <nav style="display:flex;gap:clamp(20px,3vw,44px)">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+          <button onClick="{{ n.go }}" style="all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;font-family:'Jost',sans-serif;font-weight:400;font-size:12px;letter-spacing:0.32em;text-transform:uppercase;color:{{ n.color }};transition:color .4s" style-hover="color:#fff">
+            <span>{{ n.label }}</span>
+            <span style="width:4px;height:4px;border-radius:50%;background:#f3f2f2;opacity:{{ n.dot }};transition:opacity .4s"></span>
+          </button>
+        </sc-for>
+      </nav>
+    </header>
+
+    <main style="flex:1;display:flex;flex-direction:column">
+      <!-- HOME -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+        <section data-screen-label="Home — Spotlight" style="display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:clamp(32px,5vw,72px);padding:16px clamp(24px,5vw,80px) 80px;max-width:1280px;width:100%;box-sizing:border-box;align-self:center">
+          <img src="assets/medusa.png" alt="Medusa cover art" style="width:clamp(200px,24vw,300px);aspect-ratio:1;object-fit:cover;box-shadow:0 40px 140px rgba(255,255,255,0.07)">
+          <div style="display:flex;flex-direction:column;gap:20px;max-width:480px">
+            <span style="font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#9b9797">New single · Out now</span>
+            <h1 style="margin:0;font-family:'Jost',sans-serif;font-weight:200;font-size:clamp(32px,4vw,56px);letter-spacing:0.22em;line-height:1;color:#f3f2f2">MEDUSA</h1>
+            <p style="margin:0;max-width:36ch;font-size:16px;line-height:1.7;color:#bab6b6;text-wrap:pretty">Downtempo transmissions and IDM explorations from deep orbit.</p>
+            <div style="display:flex;align-items:center;gap:18px">
+              <button onClick="{{ togglePlay }}" aria-label="Play" style="all:unset;cursor:pointer;flex:none;width:48px;height:48px;border-radius:50%;background:#f3f2f2;color:#000;display:flex;align-items:center;justify-content:center;transition:transform .3s" style-hover="transform:scale(1.06)">{{ playIcon }}</button>
+              <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;justify-content:space-between;font-size:12px;color:#bab6b6"><span>Play Medusa</span><span style="font-variant-numeric:tabular-nums">{{ timeLabel }}</span></div>
+                <div style="height:1px;background:rgba(243,242,242,0.15)"><div style="height:1px;width:{{ progressPct }};background:#f3f2f2"></div></div>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px 28px">
+              <sc-for list="{{ streams }}" as="s" hint-placeholder-count="4">
+                <a href="{{ s.url }}" target="_blank" style="font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#bab6b6;text-decoration:none;transition:color .3s" style-hover="color:#fff">{{ s.label }}</a>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+
+        <section data-screen-label="Home — News" style="min-height:480px;display:flex;flex-direction:column;gap:48px;padding:96px clamp(24px,5vw,80px);border-top:1px solid rgba(243,242,242,0.1);max-width:1280px;width:100%;box-sizing:border-box;align-self:center">
+          <h2 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(18px,1.6vw,22px);letter-spacing:0.5em;text-transform:uppercase;line-height:1.4;color:#f3f2f2">News</h2>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:48px 40px">
+            <sc-for list="{{ news }}" as="n" hint-placeholder-count="3">
+              <article onClick="{{ n.open }}" style="display:flex;flex-direction:column;gap:16px;cursor:pointer;transition:opacity .3s" style-hover="opacity:0.75">
+                <div style="aspect-ratio:3/2;background:rgba(243,242,242,0.04);display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#605d5d;background-image:{{ n.img }};background-size:cover;background-position:center">{{ n.imgNote }}</div>
+                <span style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#7d7979">{{ n.date }}</span>
+                <h3 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:20px;letter-spacing:0.04em;line-height:1.35;color:#f3f2f2">{{ n.title }}</h3>
+                <p style="margin:0;font-size:14px;line-height:1.7;color:#9b9797;text-wrap:pretty">{{ n.body }}</p>
+              </article>
+            </sc-for>
+          </div>
+        </section>
+
+        <section data-screen-label="Home — Newsletter" style="min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:80px 24px;text-align:center;border-top:1px solid rgba(243,242,242,0.1);background:linear-gradient(rgba(243,242,242,0.025),rgba(243,242,242,0))">
+          <h2 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(18px,1.6vw,22px);letter-spacing:0.5em;text-transform:uppercase;line-height:1.4;color:#f3f2f2">Transmissions</h2>
+          <p style="margin:0;max-width:44ch;font-size:15px;line-height:1.7;color:#9b9797;text-wrap:pretty">New releases, live dates and studio notes, sent rarely. No noise.</p>
+          <sc-if value="{{ notSubscribed }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ subscribe }}" style="display:flex;align-items:flex-end;gap:20px;width:min(480px,100%);margin-top:16px">
+              <input required type="email" placeholder="Email address" style="all:unset;flex:1;min-width:0;padding:14px 0;border-bottom:1px solid rgba(243,242,242,0.25);font-size:15px;color:#f3f2f2;text-align:left;transition:border-color .3s" style-focus="border-bottom-color:#f3f2f2">
+              <button type="submit" style="all:unset;cursor:pointer;flex:none;padding:14px 28px;border:1px solid rgba(243,242,242,0.5);border-radius:999px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:#f3f2f2;transition:all .3s" style-hover="background:#f3f2f2;color:#000;border-color:#f3f2f2">Subscribe</button>
+            </form>
+          </sc-if>
+          <sc-if value="{{ subscribed }}" hint-placeholder-val="{{ false }}">
+            <span style="margin-top:16px;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:0.3em;text-transform:uppercase;color:#f3f2f2">Signal received — you're on the list</span>
+          </sc-if>
+        </section>
+      </sc-if>
+
+      <!-- NEWS DETAIL -->
+      <sc-if value="{{ isNews }}" hint-placeholder-val="{{ false }}">
+        <article data-screen-label="News detail" style="width:100%;max-width:880px;box-sizing:border-box;align-self:center;padding:48px clamp(24px,5vw,80px) 120px;display:flex;flex-direction:column;gap:48px">
+          <button onClick="{{ backHome }}" style="all:unset;cursor:pointer;align-self:flex-start;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#7d7979;transition:color .3s" style-hover="color:#fff">← All news</button>
+          <header style="display:flex;flex-direction:column;gap:20px">
+            <span style="font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#9b9797">{{ cur.date }}</span>
+            <h1 style="margin:0;font-family:'Jost',sans-serif;font-weight:200;font-size:clamp(32px,4vw,52px);letter-spacing:0.04em;line-height:1.2;color:#f3f2f2;text-wrap:balance">{{ cur.title }}</h1>
+            <p style="margin:0;max-width:52ch;font-size:18px;line-height:1.7;color:#bab6b6;text-wrap:pretty">{{ cur.body }}</p>
+          </header>
+          <div style="aspect-ratio:16/9;width:100%;background:rgba(243,242,242,0.04);display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#605d5d;background-image:{{ cur.img }};background-size:cover;background-position:center">{{ cur.imgNote }}</div>
+          <div style="display:flex;flex-direction:column;gap:24px;max-width:62ch;font-size:16px;line-height:1.85;color:#bab6b6">
+            <p style="margin:0;text-wrap:pretty">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            <p style="margin:0;text-wrap:pretty">Vestibulum id ligula porta felis euismod semper. Maecenas faucibus mollis interdum. Nullam quis risus eget urna mollis ornare vel eu leo. Aenean lacinia bibendum nulla sed consectetur, sed posuere consectetur est at lobortis.</p>
+            <blockquote style="margin:16px 0;padding:0;font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(20px,2vw,26px);line-height:1.5;letter-spacing:0.02em;color:#f3f2f2">“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.”</blockquote>
+            <p style="margin:0;text-wrap:pretty">Donec sed odio dui. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Etiam porta sem malesuada magna mollis euismod. Curabitur blandit tempus porttitor. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</p>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:40px;border-top:1px solid rgba(243,242,242,0.1)">
+            <button onClick="{{ prevNews }}" style="all:unset;cursor:pointer;display:flex;flex-direction:column;gap:8px;max-width:45%;transition:opacity .3s" style-hover="opacity:0.7">
+              <span style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#7d7979">← Previous</span>
+              <span style="font-family:'Jost',sans-serif;font-weight:300;font-size:17px;color:#f3f2f2">{{ prevTitle }}</span>
+            </button>
+            <button onClick="{{ nextNews }}" style="all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:45%;text-align:right;transition:opacity .3s" style-hover="opacity:0.7">
+              <span style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#7d7979">Next →</span>
+              <span style="font-family:'Jost',sans-serif;font-weight:300;font-size:17px;color:#f3f2f2">{{ nextTitle }}</span>
+            </button>
+          </div>
+        </article>
+      </sc-if>
+
+      <!-- ABOUT -->
+      <sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="About" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:clamp(40px,7vw,120px);padding:80px clamp(24px,5vw,80px) 120px;max-width:1280px">
+          <div style="display:flex;flex-direction:column;gap:24px">
+            <h2 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(18px,1.6vw,22px);letter-spacing:0.5em;text-transform:uppercase;line-height:1.4;color:#f3f2f2">About</h2>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:24px;max-width:58ch;font-size:16px;line-height:1.8;color:#bab6b6">
+            <p style="margin:0;text-wrap:pretty">Satellite Respond is the downtempo and IDM project of Boris Gladkill. The music drifts between slow-motion soundscapes and intricate, glitching rhythm work, built from processed field recordings, analog synthesis and patient, unresolved melodies.</p>
+            <p style="margin:0;text-wrap:pretty">Each release is framed as a transmission: a fragment picked up from somewhere far away, cold at the edges and warm at the core. The project takes its cues from science fiction, orbital mechanics and the long silences between stations.</p>
+            <p style="margin:0;color:#7d7979;font-size:13px">[Placeholder bio — replace with final copy.]</p>
+            <div style="display:flex;flex-wrap:wrap;gap:24px 56px;padding-top:32px">
+              <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <span style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#7d7979">{{ f.k }}</span>
+                  <span style="font-size:15px;color:#f3f2f2">{{ f.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- MUSIC -->
+      <sc-if value="{{ isMusic }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="Music" style="padding:80px clamp(24px,5vw,80px) 120px;max-width:1120px;width:100%;box-sizing:border-box;align-self:center;display:flex;flex-direction:column;gap:72px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:20px">
+              <h2 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(18px,1.6vw,22px);letter-spacing:0.5em;text-transform:uppercase;line-height:1.4;color:#f3f2f2">Music</h2>
+            </div>
+            <a href="https://satelliterespond.bandcamp.com/" target="_blank" style="font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#bab6b6;text-decoration:none;padding-bottom:6px;border-bottom:1px solid rgba(243,242,242,0.3);transition:all .3s" style-hover="color:#fff;border-bottom-color:#fff">Full discography on Bandcamp</a>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:72px">
+            <sc-for list="{{ releases }}" as="r" hint-placeholder-count="3">
+              <article style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(28px,4vw,56px);align-items:center">
+                <div style="aspect-ratio:1;max-width:360px;width:100%;background:rgba(243,242,242,0.04);display:flex;align-items:center;justify-content:center;font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#605d5d;background-image:{{ r.cover }};background-size:cover;background-position:center">{{ r.coverNote }}</div>
+                <div style="display:flex;flex-direction:column;gap:20px;min-width:0">
+                  <span style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#7d7979">{{ r.meta }}</span>
+                  <h3 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(28px,3vw,40px);letter-spacing:0.12em;text-transform:uppercase;color:#f3f2f2">{{ r.title }}</h3>
+                  <div style="display:flex;align-items:center;gap:18px;padding:18px 20px;background:rgba(243,242,242,0.04)">
+                    <div style="flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(243,242,242,0.4);display:flex;align-items:center;justify-content:center;font-size:11px;padding-left:2px;box-sizing:border-box">▶</div>
+                    <div style="flex:1;display:flex;flex-direction:column;gap:10px;min-width:0">
+                      <div style="height:1px;background:rgba(243,242,242,0.15)"></div>
+                      <span style="font-size:11px;color:#7d7979">Bandcamp embed placeholder</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- CONTACT -->
+      <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+        <section data-screen-label="Contact" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(48px,7vw,120px);padding:80px clamp(24px,5vw,80px) 120px;max-width:1280px">
+          <div style="display:flex;flex-direction:column;gap:48px">
+            <div style="display:flex;flex-direction:column;gap:24px">
+              <h2 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:clamp(18px,1.6vw,22px);letter-spacing:0.5em;text-transform:uppercase;line-height:1.4;color:#f3f2f2">Contact</h2>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:32px">
+              <sc-for list="{{ emails }}" as="e" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <span style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.36em;text-transform:uppercase;color:#7d7979">{{ e.k }}</span>
+                  <a href="{{ e.href }}" style="font-size:18px;color:#f3f2f2;text-decoration:none;transition:opacity .3s" style-hover="opacity:0.7">{{ e.v }}</a>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+              <form onSubmit="{{ submit }}" style="display:flex;flex-direction:column;gap:32px;max-width:520px">
+                <div style="display:flex;gap:28px">
+                  <sc-for list="{{ topics }}" as="t" hint-placeholder-count="3">
+                    <button type="button" onClick="{{ t.pick }}" style="all:unset;cursor:pointer;padding-bottom:6px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:{{ t.fg }};border-bottom:1px solid {{ t.line }};transition:all .3s">{{ t.label }}</button>
+                  </sc-for>
+                </div>
+                <input required placeholder="Name" style="all:unset;padding:14px 0;border-bottom:1px solid rgba(243,242,242,0.2);font-size:16px;color:#f3f2f2;transition:border-color .3s" style-focus="border-bottom-color:#f3f2f2">
+                <input required type="email" placeholder="Email" style="all:unset;padding:14px 0;border-bottom:1px solid rgba(243,242,242,0.2);font-size:16px;color:#f3f2f2;transition:border-color .3s" style-focus="border-bottom-color:#f3f2f2">
+                <textarea required rows="4" placeholder="Message" style="all:unset;padding:14px 0;border-bottom:1px solid rgba(243,242,242,0.2);font-size:16px;color:#f3f2f2;white-space:pre-wrap;transition:border-color .3s" style-focus="border-bottom-color:#f3f2f2"></textarea>
+                <button type="submit" style="all:unset;cursor:pointer;align-self:flex-start;padding:16px 36px;border:1px solid rgba(243,242,242,0.5);border-radius:999px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.32em;text-transform:uppercase;color:#f3f2f2;transition:all .3s" style-hover="background:#f3f2f2;color:#000;border-color:#f3f2f2">Send</button>
+              </form>
+            </sc-if>
+            <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:20px;max-width:440px;padding-top:8px">
+                <span style="font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#9b9797">Received</span>
+                <h3 style="margin:0;font-family:'Jost',sans-serif;font-weight:300;font-size:32px;letter-spacing:0.04em;color:#f3f2f2">Transmission logged.</h3>
+                <p style="margin:0;color:#bab6b6;line-height:1.7">Thanks for reaching out. Expect a reply within a few days.</p>
+                <button onClick="{{ reset }}" style="all:unset;cursor:pointer;align-self:flex-start;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:#bab6b6;padding-bottom:6px;border-bottom:1px solid rgba(243,242,242,0.3)" style-hover="color:#fff">Send another</button>
+              </div>
+            </sc-if>
+          </div>
+        </section>
+      </sc-if>
+    </main>
+
+    <footer style="display:flex;flex-direction:column;align-items:center;gap:20px;padding:48px 24px 40px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px 32px">
+        <sc-for list="{{ socials }}" as="s" hint-placeholder-count="7">
+          <a href="{{ s.url }}" target="_blank" style="font-family:'Jost',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#7d7979;text-decoration:none;transition:color .3s" style-hover="color:#fff">{{ s.label }}</a>
+        </sc-for>
+      </div>
+      <span style="font-size:11px;letter-spacing:0.1em;color:#444141">© 2026 Satellite Respond</span>
+    </footer>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;starSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:4,&quot;step&quot;:0.25,&quot;default&quot;:1,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = { page: 'home', playing: false, t: 0, topic: 'Booking', sent: false, subscribed: false, newsIdx: 0 };
+  starRef = React.createRef();
+  componentDidMount() {
+    const c = this.starRef.current; if (!c) return;
+    const ctx = c.getContext('2d'); let w, h, dpr;
+    const resize = () => { dpr = devicePixelRatio || 1; w = c.clientWidth; h = c.clientHeight; c.width = w * dpr; c.height = h * dpr; };
+    resize(); window.addEventListener('resize', resize); this._rs = resize;
+    const stars = Array.from({ length: 240 }, () => ({ x: Math.random(), y: Math.random(), z: Math.random() ** 2.2, p: Math.random() * 6.28 }));
+    let last = performance.now();
+    const loop = (now) => {
+      const dt = Math.min(50, now - last) / 1000; last = now;
+      const speed = (this.props.starSpeed ?? 1) * 0.005;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#f3f2f2';
+      for (const s of stars) {
+        s.x -= speed * (0.15 + s.z) * dt; s.y += speed * 0.3 * (0.15 + s.z) * dt;
+        if (s.x < 0) s.x += 1; if (s.y > 1) s.y -= 1;
+        const tw = 0.65 + 0.35 * Math.sin(now / 1600 + s.p);
+        ctx.globalAlpha = (0.15 + s.z * 0.7) * tw;
+        ctx.beginPath(); ctx.arc(s.x * w, s.y * h, 0.35 + s.z * 1.3, 0, 6.28); ctx.fill();
+      }
+      this._raf = requestAnimationFrame(loop);
+    };
+    this._raf = requestAnimationFrame(loop);
+    this._tick = setInterval(() => { if (this.state.playing) this.setState(s => ({ t: (s.t + 1) % 372 })); }, 1000);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this._raf); clearInterval(this._tick); window.removeEventListener('resize', this._rs); }
+  go = (p) => () => { this.setState({ page: p }); window.scrollTo(0, 0); };
+  renderVals() {
+    const { page, playing, t, topic, sent } = this.state;
+    const fmt = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+    const icon = (d) => React.createElement('svg', { width: 14, height: 14, viewBox: '0 0 24 24', fill: 'currentColor', style: { marginLeft: playing ? 0 : 2 } }, React.createElement('path', { d }));
+    const news = [
+      { date: 'Nov 2026', title: 'Medusa is out now', body: 'The new single is streaming everywhere and available on Bandcamp.', img: 'url(assets/medusa.png)', imgNote: '' },
+      { date: 'Date', title: 'News headline', body: 'Placeholder for a live date, release announcement or studio update.', img: 'none', imgNote: 'Image' },
+      { date: 'Date', title: 'News headline two', body: 'Placeholder for a live date, release announcement or studio update.', img: 'none', imgNote: 'Image' },
+    ].map((n, i) => ({ ...n, open: () => { this.setState({ page: 'news', newsIdx: i }); window.scrollTo(0, 0); } }));
+    const socials = [
+      ['Spotify', '#'], ['Apple Music', '#'], ['Bandcamp', 'https://satelliterespond.bandcamp.com/'], ['SoundCloud', '#'],
+      ['Instagram', '#'], ['Facebook', '#'], ['X', '#'],
+    ].map(([label, url]) => ({ label, url }));
+    return {
+      starRef: this.starRef,
+      goHome: this.go('home'),
+      navItems: ['home', 'about', 'music', 'contact'].map(p => ({
+        label: p, go: this.go(p),
+        color: page === p ? '#f3f2f2' : '#7d7979',
+        dot: page === p ? 1 : 0,
+      })),
+      isHome: page === 'home',
+      notSubscribed: !this.state.subscribed, subscribed: this.state.subscribed,
+      subscribe: (e) => { e.preventDefault(); this.setState({ subscribed: true }); },
+      news, cur: news[this.state.newsIdx],
+      isNews: page === 'news',
+      backHome: this.go('home'),
+      prevTitle: news[(this.state.newsIdx + 2) % 3].title, nextTitle: news[(this.state.newsIdx + 1) % 3].title,
+      prevNews: () => { this.setState(st => ({ newsIdx: (st.newsIdx + 2) % 3 })); window.scrollTo(0, 0); },
+      nextNews: () => { this.setState(st => ({ newsIdx: (st.newsIdx + 1) % 3 })); window.scrollTo(0, 0); },
+      isAbout: page === 'about', isMusic: page === 'music', isContact: page === 'contact',
+      togglePlay: () => this.setState(s => ({ playing: !s.playing })),
+      playIcon: playing ? icon('M6 4h4v16H6zM14 4h4v16h-4z') : icon('M7 4l13 8-13 8z'),
+      timeLabel: `${fmt(t)} / 6:12`,
+      progressPct: `${(t / 372) * 100}%`,
+      streams: socials.slice(0, 4),
+      socials,
+      facts: [{ k: 'Project of', v: 'Boris Gladkill' }, { k: 'Genre', v: 'Downtempo / IDM' }, { k: 'Latest', v: 'Medusa' }],
+      releases: [
+        { title: 'Medusa', meta: 'Single · 2026', cover: 'url(assets/medusa.png)', coverNote: '' },
+        { title: 'Release title', meta: 'EP · Year', cover: 'none', coverNote: 'Cover art' },
+        { title: 'Release title', meta: 'Album · Year', cover: 'none', coverNote: 'Cover art' },
+      ],
+      emails: [
+        { k: 'Booking', v: 'booking@satelliterespond.com', href: 'mailto:booking@satelliterespond.com' },
+        { k: 'Press & management', v: 'press@satelliterespond.com', href: 'mailto:press@satelliterespond.com' },
+      ],
+      topics: ['Booking', 'Press', 'Other'].map(l => ({
+        label: l, pick: () => this.setState({ topic: l }),
+        fg: topic === l ? '#f3f2f2' : '#7d7979',
+        line: topic === l ? '#f3f2f2' : 'transparent',
+      })),
+      notSent: !sent, sent,
+      submit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      reset: () => this.setState({ sent: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.tile {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+}

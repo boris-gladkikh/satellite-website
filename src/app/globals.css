@@ -1,18 +1,267 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ---------- Design tokens (site-redesign/README.md) ---------- */
+:root {
+  --bg: #000000;
+  --text: #f3f2f2;
+  --text-hover: #ffffff;
+  --text-secondary: #bab6b6;
+  --text-muted: #9b9797;
+  --text-tertiary: #7d7979;
+  --text-placeholder-tile: #605d5d;
+  --text-copyright: #444141;
+
+  --hairline: rgba(243, 242, 242, 0.1);
+  --track: rgba(243, 242, 242, 0.15);
+  --input-line: rgba(243, 242, 242, 0.2);
+  --input-line-strong: rgba(243, 242, 242, 0.25);
+  --link-line: rgba(243, 242, 242, 0.3);
+  --fill-subtle: rgba(243, 242, 242, 0.04);
+  --button-border: rgba(243, 242, 242, 0.5);
+  --selection: rgba(255, 255, 255, 0.25);
+
+  --gutter: clamp(24px, 5vw, 80px);
+  --cover-glow: 0 40px 140px rgba(255, 255, 255, 0.07);
+  --ease: 0.3s ease;
+
+  --font-display: var(--font-jost), 'Jost', sans-serif;
+  --font-body: var(--font-archivo), 'Archivo', sans-serif;
+
+  color-scheme: dark;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-* {
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--text-hover);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 1px solid var(--text);
+  outline-offset: 3px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(243, 242, 242, 0.35);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- App shell ---------- */
+.shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.shell > main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Shared type styles ---------- */
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.4;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.meta-label {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+/* Plain uppercase text link (streaming links, back link) */
+.text-link {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color var(--ease);
+}
+
+.text-link:hover {
+  color: var(--text-hover);
+}
+
+/* Underline-style text link */
+.underline-link {
+  align-self: flex-start;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--link-line);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color var(--ease), border-color var(--ease);
+}
+
+.underline-link:hover {
+  color: var(--text-hover);
+  border-bottom-color: var(--text-hover);
+}
+
+/* Outline pill button */
+.pill-button {
+  flex: none;
+  padding: 14px 28px;
+  border: 1px solid var(--button-border);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text);
+  transition: background-color var(--ease), color var(--ease), border-color var(--ease);
+}
+
+.pill-button:hover:not(:disabled) {
+  background: var(--text);
+  border-color: var(--text);
+  color: #000;
+}
+
+.pill-button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+/* Underline input / textarea */
+.underline-input {
+  width: 100%;
+  min-width: 0;
+  padding: 14px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--input-line);
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 16px;
+  color: var(--text);
+  transition: border-color var(--ease);
+  resize: vertical;
+}
+
+.underline-input:focus {
+  outline: none;
+  border-bottom-color: var(--text);
+}
+
+.underline-input:focus-visible {
+  outline: none;
+}
+
+.field-error {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Image placeholder tile */
+.placeholder-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fill-subtle);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--text-placeholder-tile);
+}
+
+/* Spam honeypot: hidden from people, visible to naive bots */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }

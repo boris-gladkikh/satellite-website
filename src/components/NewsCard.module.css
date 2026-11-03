@@ -1,0 +1,36 @@
+/* The whole card is clickable via the stretched title link. */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: opacity var(--ease);
+}
+
+.card:hover {
+  opacity: 0.75;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+.excerpt {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
